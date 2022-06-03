@@ -15,12 +15,16 @@ const getDirection = (eventEmitter) => {
   });
 };
 
-const main = () => {
+const init = () => {
   const snakePos = { x: 5, y: 5 };
   const fruitPos = { x: 2, y: 4 };
-  const snake = new SnakeGame(snakePos, fruitPos);
+  return new SnakeGame(snakePos, fruitPos);
+};
 
+const main = () => {
+  const snake = init();
   const eventEmitter = new EventEmitter();
+
   eventEmitter.on('up', () => snake.up());
   eventEmitter.on('down', () => snake.down());
   eventEmitter.on('left', () => snake.left());
