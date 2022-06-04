@@ -1,36 +1,35 @@
-const fs = require('fs');
-const { EventEmitter } = require('events');
-const { SnakeGame } = require('./snakeGame.js');
+class Snake {
+  #x;
+  #y;
 
-const latestDirection = (directions) => {
-  const allDirections = directions.trim().split('\n');
-  return allDirections[allDirections.length - 1];
-};
+  constructor(initialPos) {
+    this.#x = initialPos.x;
+    this.#y = initialPos.y;
+  }
 
-const getDirection = (eventEmitter) => {
-  fs.watchFile('directions.txt', () => {
-    const directions = fs.readFileSync('directions.txt', 'utf8');
-    const direction = latestDirection(directions);
-    eventEmitter.emit(direction);
-  });
-};
+  down() {
+    this.#y--;
+  }
 
-const init = () => {
-  const snakePos = { x: 5, y: 5 };
-  const fruitPos = { x: 2, y: 4 };
-  return new SnakeGame(snakePos, fruitPos);
-};
+  up() {
+    this.#y++;
+  }
 
-const main = () => {
-  const snake = init();
-  const eventEmitter = new EventEmitter();
+  left() {
+    this.#x--;
+  }
 
-  eventEmitter.on('up', () => snake.up());
-  eventEmitter.on('down', () => snake.down());
-  eventEmitter.on('left', () => snake.left());
-  eventEmitter.on('right', () => snake.right());
+  right() {
+    this.#x++;
+  }
 
-  getDirection(eventEmitter);
-};
+  toString() {
+    return `${this.#x},${this.#y}`;
+  }
 
-main();
+  getPosition() {
+    return [this.#x, this.#y];
+  }
+}
+
+exports.Snake = Snake;
